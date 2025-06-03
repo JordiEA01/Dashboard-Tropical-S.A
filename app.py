@@ -20,6 +20,8 @@ with col_title:
 importaciones = pd.read_csv("importaciones.csv")
 origenes = pd.read_csv("origenes.csv")
 supermercados = pd.read_csv("supermercados.csv")
+actores = pd.read_excel("actores_comerciales_colombia.xlsx")
+posicionamiento = pd.read_excel("posicionamiento_estrategico_colombia.xlsx")
 
 # Colores de gráficas
 color_1 = '#2a9d8f'
@@ -64,6 +66,14 @@ with st.container():
     - 🌺 **Agroexpo**: Espacio clave para networking con distribuidores, supermercados y canal HORECA.
     - 🌟 **Estrategia**: Posicionamiento de Tropical S.A. como proveedor sostenible y de valor agregado.
     """)
+
+# Sección 6: Actores Comerciales Relevantes
+st.subheader("6. Actores Comerciales Relevantes")
+st.dataframe(actores, use_container_width=True)
+
+# Sección 7: Nivel de Posicionamiento Proyectado por Actor
+st.subheader("7. Nivel de Posicionamiento Proyectado del Producto por Cadena Estratégica")
+st.dataframe(posicionamiento, use_container_width=True)
 
 # Estilo adicional
 st.markdown("""
