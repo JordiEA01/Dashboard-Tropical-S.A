@@ -75,6 +75,19 @@ st.dataframe(actores, use_container_width=True)
 st.subheader("🚀 7. Nivel de Posicionamiento Proyectado del Producto por Cadena Estratégica")
 st.dataframe(posicionamiento, use_container_width=True)
 
+# Sección 8: Cantidad de Actores por Tipo de Canal
+st.subheader("📊 8. Cantidad de Actores por Tipo de Canal")
+conteo_actores = actores['Tipo de Actor Comercial'].value_counts().reset_index()
+conteo_actores.columns = ['Tipo de Actor', 'Cantidad']
+col1, col2, col3 = st.columns(3)
+for i, row in conteo_actores.iterrows():
+    if i == 0: col1.metric(row['Tipo de Actor'], row['Cantidad'])
+    elif i == 1: col2.metric(row['Tipo de Actor'], row['Cantidad'])
+    elif i == 2: col3.metric(row['Tipo de Actor'], row['Cantidad'])
+fig_pie = px.pie(conteo_actores, names='Tipo de Actor', values='Cantidad',
+                 title='Distribución de Actores Estratégicos', color_discrete_sequence=px.colors.qualitative.Safe)
+st.plotly_chart(fig_pie, use_container_width=True)
+
 # Estilo adicional
 st.markdown("""
 <style>
@@ -83,4 +96,3 @@ st.markdown("""
     .block-container { padding-top: 1rem; }
 </style>
 """, unsafe_allow_html=True)
-
