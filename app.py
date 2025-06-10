@@ -33,3 +33,4 @@ st.subheader("📈 1. Evolución de Importaciones de Jugos de Frutas (2021–202
 fig1 = px.line(importaciones, x='Año', y='Importaciones (USD millones)', markers=True,
                line_shape="spline", template='plotly_white', color_discrete_sequence=[color_1])
 
+
