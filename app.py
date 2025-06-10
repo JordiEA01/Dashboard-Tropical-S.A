@@ -3,96 +3,74 @@ import pandas as pd
 import plotly.express as px
 from PIL import Image
 
-# Configuración de la página
-st.set_page_config(page_title="Dashboard Tropical S.A.", layout="wide")
+# ---------- Configuración de la página ----------
+st.set_page_config(
+    page_title="Dashboard Tropical S.A.",
+    layout="wide",
+    page_icon="🍍"
+)
 
-# Logo y título
+# ---------- Estilos personalizados ----------
+st.markdown("""
+    <style>
+        body {
+            background-color: #f5f9f6;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .main {
+            background-color: #f5f9f6;
+        }
+        h1, h2, h3 {
+            color: #2a9d8f;
+        }
+        .block-container {
+            padding-top: 2rem;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+# ---------- Encabezado con logo y título ----------
 col_logo, col_title = st.columns([1, 4])
 with col_logo:
     st.image("https://upload.wikimedia.org/wikipedia/commons/7/7e/Costa_Rica_coat_of_arms.svg", width=80)
 with col_title:
-    st.title("Oportunidades de Exportación de Jugos Naturales en Colombia")
-    st.markdown("""
-    <style> .main { background-color: #f6f9fc; } </style>
-    """, unsafe_allow_html=True)
+    st.markdown("## Tropical S.A. – Inteligencia Comercial B2B en Colombia")
+    st.markdown("#### Exportación de jugos naturales saludables y sostenibles")
+    st.markdown("*Dashboard estratégico con enfoque en relaciones comerciales B2B*")
 
-# Cargar datos
+# ---------- Paleta de colores corporativa ----------
+color_1 = '#2a9d8f'  # Verde tropical
+color_2 = '#f4a261'  # Naranja suave
+color_3 = '#264653'  # Azul oscuro
+color_4 = '#e9c46a'  # Amarillo claro
+
+# ---------- Carga de datos ----------
 importaciones = pd.read_csv("importaciones.csv")
 origenes = pd.read_csv("origenes.csv")
 supermercados = pd.read_csv("supermercados.csv")
 actores = pd.read_excel("actores_comerciales_colombia.xlsx")
 posicionamiento = pd.read_excel("posicionamiento_estrategico_colombia.xlsx")
 
-# Colores de gráficas
-color_1 = '#2a9d8f'
-color_2 = '#e76f51'
-color_3 = '#264653'
-
-# Sección 1: Importaciones
-st.subheader("📈 1. Evolución de Importaciones de Jugos de Frutas (2021–2023)")
-fig1 = px.line(importaciones, x='Año', y='Importaciones (USD millones)', markers=True,
-               line_shape="spline", template='plotly_white', color_discrete_sequence=[color_1])
-fig1.update_layout(title_text='Tendencia de Importaciones', title_x=0.5)
+# ---------- Sección 1: Importaciones ----------
+st.markdown("### 📈 1. Evolución de Importaciones de Jugos de Frutas (2021–2023)")
+fig1 = px.line(
+    importaciones,
+    x='Año',
+    y='Importaciones (USD millones)',
+    markers=True,
+    line_shape="spline",
+    template='plotly_white',
+    color_discrete_sequence=[color_1]
+)
+fig1.update_layout(
+    title="Tendencia de importaciones de jugo en Colombia",
+    xaxis_title="Año",
+    yaxis_title="Millones USD",
+    font=dict(family="Segoe UI", size=14),
+    plot_bgcolor="#ffffff"
+)
 st.plotly_chart(fig1, use_container_width=True)
 
-# Sección 2: Orígenes
-st.subheader("🌍 2. Principales Países de Origen de Importación (2023)")
-fig2 = px.bar(origenes, x='Importaciones (USD millones)', y='País', orientation='h',
-              color_discrete_sequence=[color_2], template='plotly_white')
-fig2.update_layout(title_text='Ranking de Países Proveedores', title_x=0.5)
-st.plotly_chart(fig2, use_container_width=True)
+# ---------- Espacio visual ----------
+st.markdown("---")
 
-# Sección 3: Datos demográficos
-st.subheader("👥 3. Población y Segmento Saludable")
-total_population = 53.26
-healthy_segment = total_population * 0.40
-col1, col2 = st.columns(2)
-col1.metric("Población Total (2025)", f"{total_population:.2f} millones")
-col2.metric("Segmento Saludable (40%)", f"{healthy_segment:.2f} millones")
-
-# Sección 4: Supermercados
-st.subheader("🏬 4. Cadenas de Supermercados y Tiendas de Descuento")
-fig3 = px.bar(supermercados, x='Cadena', y='Número de Tiendas',
-              color='Cadena', color_discrete_sequence=px.colors.qualitative.Pastel,
-              template='plotly_white')
-fig3.update_layout(title_text='Presencia Territorial de Supermercados', title_x=0.5)
-st.plotly_chart(fig3, use_container_width=True)
-
-# Sección 5: Ferias Comerciales
-st.subheader("🎪 5. Participación en Ferias Comerciales y Networking Profesional")
-with st.container():
-    st.markdown("""
-    - 🌿 **Bioexpo 2023**: Más de 31 acuerdos comerciales alcanzados por un valor de **10,112 millones de pesos colombianos**.
-    - 🌺 **Agroexpo**: Espacio clave para networking con distribuidores, supermercados y canal HORECA.
-    - 🌟 **Estrategia**: Posicionamiento de Tropical S.A. como proveedor sostenible y de valor agregado.
-    """)
-
-# Sección 6: Actores Comerciales Relevantes
-st.subheader("🤝 6. Actores Comerciales Relevantes")
-st.dataframe(actores, use_container_width=True)
-
-# Sección 7: Nivel de Posicionamiento Proyectado por Actor
-st.subheader("🚀 7. Nivel de Posicionamiento Proyectado del Producto por Cadena Estratégica")
-st.dataframe(posicionamiento, use_container_width=True)
-
-# Sección 8: Cantidad de Actores por Tipo de Canal
-st.subheader("📊 8. Cantidad de Actores por Tipo de Canal")
-conteo_actores = actores['Tipo de Actor Comercial'].value_counts().reset_index()
-conteo_actores.columns = ['Tipo de Actor', 'Cantidad']
-col1, col2, col3 = st.columns(3)
-for i, row in conteo_actores.iterrows():
-    if i == 0: col1.metric(row['Tipo de Actor'], row['Cantidad'])
-    elif i == 1: col2.metric(row['Tipo de Actor'], row['Cantidad'])
-    elif i == 2: col3.metric(row['Tipo de Actor'], row['Cantidad'])
-fig_pie = px.pie(conteo_actores, names='Tipo de Actor', values='Cantidad',
-                 title='Distribución de Actores Estratégicos', color_discrete_sequence=px.colors.qualitative.Safe)
-st.plotly_chart(fig_pie, use_container_width=True)
-
-# Estilo adicional
-st.markdown("""
-<style>
-    h1, h2, h3 { color: #264653; }
-    .stMetricValue { font-size: 28px; }
-    .block-container { padding-top: 1rem; }
-</style>
-""", unsafe_allow_html=True)
